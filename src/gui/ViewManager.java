@@ -120,7 +120,7 @@ public class ViewManager extends JFrame {
         pack();
     }
     public void showOrderHistoryPanel() {
-        // Laddar orderHistory varje gång vi visar orderHistory
+        // Laddar orderHistory varje gång vi visar orderHistoryPanel
         orderHistoryPanel.loadOrderHistory();
         cardLayout.show(cardPanel, "orderHistory");
         pack();

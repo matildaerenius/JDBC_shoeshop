@@ -81,9 +81,9 @@ public class OrderHistoryPanel extends JPanel {
         add(scrollPane);
     }
 
-    /**
-     * Publik metod som laddar orderhistorik och visar dom i panelen
-     * Anropas när man växlar till denna panel i ViewManager
+    /*
+     Publik metod som laddar orderhistorik och visar dom i panelen
+     Anropas när man växlar till denna panel i ViewManager
      */
     public void loadOrderHistory() {
         itemsPanel.removeAll();

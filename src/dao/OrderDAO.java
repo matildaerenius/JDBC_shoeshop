@@ -63,7 +63,7 @@ public class OrderDAO {
     public List<Order> getOrdersForCustomer(Connection conn, int customerId) throws SQLException {
         List<Order> orders = new ArrayList<>();
 
-        // Lägger ihop antal produkter och totalpris via en LEFT JOIN till order_details och product
+        // Lägger ihop antal produkter och totalpris via en left join till order_details och product
         String sql =
                 " SELECT o.id, o.date, " +
                         "        COALESCE(SUM(od.quantity), 0) AS total_items, " +

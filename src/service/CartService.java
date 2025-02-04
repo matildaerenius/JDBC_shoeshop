@@ -22,7 +22,7 @@ public class CartService {
 
     public List<CartItem> getCartItems(int customerId) {
         try (Connection conn = dbConnection.getConnection()) {
-            conn.setAutoCommit(false); // Starta transaktion
+            conn.setAutoCommit(false); // Startar transaktionen
 
             try {
                 Integer activeOrderId = orderDAO.getActiveOrderId(conn, customerId);
@@ -47,7 +47,7 @@ public class CartService {
 
     public boolean addToCart(int customerId, int productId) {
         try (Connection conn = dbConnection.getConnection()) {
-            conn.setAutoCommit(false); // Starta transaktion
+            conn.setAutoCommit(false); // Startar transaktionen
 
             try {
                 Integer activeOrderId = orderDAO.getActiveOrderId(conn, customerId);

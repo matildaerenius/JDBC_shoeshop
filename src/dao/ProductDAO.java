@@ -76,7 +76,7 @@ public class ProductDAO {
         return products;
     }
 
-    // Söker efter produkter genom brand,color,size eller price och lägger i lista av produkter
+    // Söker efter produkter genom brand, color, size eller price och lägger i lista av produkter
     public List<Product> searchProduct(String searchTerm) {
         List<Product> products = new ArrayList<>();
         String sql = "SELECT id, size, color, brand, price, stock " +
