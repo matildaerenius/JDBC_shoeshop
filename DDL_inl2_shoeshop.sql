@@ -221,7 +221,7 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE TRIGGER trg_out_of_stock
+CREATE TRIGGER trigger_out_of_stock
 AFTER UPDATE ON product
 FOR EACH ROW
 BEGIN
