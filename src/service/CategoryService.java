@@ -2,7 +2,10 @@ package service;
 
 import dao.CategoryDAO;
 import model.Category;
+import util.DbConnection;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CategoryService {
@@ -13,6 +16,12 @@ public class CategoryService {
     }
 
     public List<Category> findAllCategories() {
-        return categoryDAO.findAllCategories();
+        try (Connection conn = DbConnection.getInstance().getConnection()) {
+            // Använder bara en select så vi kan använda autoCommit som standard aka true
+            return categoryDAO.findAllCategories(conn);
+        } catch (SQLException e) {
+            System.out.println("Error fetching categories: " + e.getMessage());
+            return List.of();
+        }
     }
 }

@@ -15,25 +15,19 @@ import java.util.List;
  */
 
 public class CategoryDAO {
-    public List<Category> findAllCategories() {
+    public List<Category> findAllCategories(Connection conn) throws SQLException {
         List<Category> categoryNames  = new ArrayList<>();
         String sql = "SELECT name FROM category";
 
-        try (Connection conn = DbConnection.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
              ResultSet rs = pstmt.executeQuery()) {
-
 
             // Kör igenom resultatet och skapar category objekt
             while (rs.next()) {
                 String name = rs.getString("name");
                 categoryNames.add(new Category(name));
             }
-
-        } catch (SQLException e) {
-            System.out.println("Error fetching categories: " + e.getMessage());
         }
-
         return categoryNames;
     }
 }

@@ -11,12 +11,11 @@ import java.sql.*;
 public class CustomerDAO {
 
     // Validerar en kund = logga in. Returnerar en customer, annars null om ingen hittas
-    public Customer validateUser(String email, String password) {
+    public Customer validateUser(Connection conn, String email, String password) throws SQLException {
         String sql = "SELECT * FROM customer "
                 + "WHERE email = ? AND password = ?";
 
-        try (Connection conn = DbConnection.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
             pstmt.setString(2, password);
@@ -33,26 +32,20 @@ public class CustomerDAO {
                     );
                 }
             }
-
-        } catch (SQLException e) {
-            System.out.println("Error validating user: " + e.getMessage());
         }
         return null;
     }
 
     // Registrerar en ny kund in till db
-    public boolean registerUser(Customer customer){
+    public boolean registerUser(Connection conn, Customer customer) throws SQLException {
         // Kollar om e-post redan finns
-        if (emailExists(customer.getEmail())) {
+        if (emailExists(conn, customer.getEmail())) {
             return false;
     }
         String sql = "INSERT INTO customer(first_name, last_name, city, email, password) "
                 + "VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = DbConnection.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            conn.setAutoCommit(false);
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             pstmt.setString(1, customer.getFirstName());
             pstmt.setString(2, customer.getLastName());
@@ -68,24 +61,18 @@ public class CustomerDAO {
                         customer.setId(rs.getInt(1)); // Sätter id som databasen genererade
                     }
                 }
-                conn.commit(); // Bekräftar transaktionen
                 return true;
             } else {
-                conn.rollback(); // Rollback om inga rader påverkades
+                return false;
             }
-
-        } catch (SQLException e) {
-            System.out.println("Error registering user: " + e.getMessage());
         }
-        return false;
     }
 
     // Kollar om e-posten redan existerar
-    private boolean emailExists(String email) {
+    private boolean emailExists(Connection conn, String email) throws SQLException {
         String sql = "SELECT id FROM customer WHERE email = ?";
 
-        try (Connection conn = DbConnection.getInstance().getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             pstmt.setString(1, email);
 
@@ -93,9 +80,7 @@ public class CustomerDAO {
                 return rs.next();
             }
 
-        } catch (SQLException e) {
-            System.out.println("Error checking email existence: " + e.getMessage());
         }
-        return false;
+        }
     }
-}
+
